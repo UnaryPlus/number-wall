@@ -65,7 +65,7 @@ library
 
   build-depends:
     base >= 4.14.1.0 && < 5,
-    memoize >= 0.2.0 && < 1.2,
+    chimera >= 0.3.2.0 && < 0.4,
     mod >= 0.1.1.0 && < 0.2,
     semirings >= 0.5.2 && < 0.8,
     JuicyPixels >= 3.3 && < 3.4

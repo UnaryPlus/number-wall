@@ -16,6 +16,7 @@ saveImage "pagoda.png" color (0, 256) (0, 128) wall
 
 {-# LANGUAGE BlockArguments #-}
 {-# LANGUAGE ConstraintKinds #-}
+{-# LANGUAGE ScopedTypeVariables #-}
 module NumberWall
   ( NumberWall, Col, Row, numberWall, pagoda, rueppel, ternary, saveImage, showSection, printSection
   , module Data.Mod.Word
@@ -23,7 +24,8 @@ module NumberWall
 
 import Prelude hiding (negate, (*), (+), (-), (^), quot)
 
-import Data.Function.Memoize (memoFix2)
+import Data.Chimera (VChimera, index, tabulateFix')
+import Data.Chimera.ContinuousMapping (fromZCurve, toZCurve, wordToInt, intToWord)
 import Data.Semiring (Semiring, Ring, zero, one, negate, (*), (+), (-), (^))
 import Data.Euclidean (Euclidean, quot)
 
@@ -47,6 +49,16 @@ type Row = Int
 
 sign :: Ring a => Int -> a
 sign x = if even x then one else negate one
+
+memoFix2 :: forall a. ((Int -> Int -> a) -> (Int -> Int -> a)) -> (Int -> Int -> a)
+memoFix2 f = uncast $ index $ (tabulateFix' (\g -> cast (f (uncast g))) :: VChimera a)
+  where
+    cast :: (Int -> Int -> a) -> (Word -> a)
+    cast f = \n -> let (x, y) = fromZCurve n in
+     f (wordToInt x) (wordToInt y)
+
+    uncast :: (Word -> a) -> (Int -> Int -> a)
+    uncast g = \x y -> g (toZCurve (intToWord x) (intToWord y))
 
 {-|
 Generate the number wall for a sequence.
