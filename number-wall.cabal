@@ -49,7 +49,7 @@ homepage:           https://github.com/UnaryPlus/number-wall
 bug-reports:        https://github.com/UnaryPlus/number-wall/issues
 license:            MIT
 license-file:       LICENSE
-extra-source-files: CHANGELOG.md, README.md
+extra-source-files: CHANGELOG.md, README.md, collage.png
 
 source-repository head
   type:     git
@@ -62,11 +62,11 @@ library
   exposed-modules:  NumberWall
 
   build-depends:
-    base ^>=4.14.1.0,
-    memoize,
-    mod,
-    semirings,
-    JuicyPixels
+    base >= 4.14.1.0 && < 5,
+    memoize >= 0.2.0 && < 1.2,
+    mod >= 0.1.1.0 && < 0.2,
+    semirings >= 0.5.2 && < 0.8,
+    JuicyPixels >= 3.3 && < 3.4
 
 test-suite test
   type:             exitcode-stdio-1.0
