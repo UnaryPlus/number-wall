@@ -2,6 +2,16 @@
 Module:    NumberWall
 Copyright: (c) Owen Bechtel, 2022
 License:   MIT
+
+Example usage:
+
+@
+wall = numberWall (pagoda :: Int -> Mod 2)
+color x = case unMod x of
+  0 -> (181, 118, 46)
+  1 -> (0, 0, 0)
+saveImage "pagoda.png" color (0, 256) (0, 128) wall
+@
 -}
 
 {-# LANGUAGE BlockArguments #-}
@@ -119,7 +129,7 @@ searchRight f limit (col, row)
   | otherwise = Just col
 
 {-|
-The pagoda sequence ([A301849](https://oeis.org/A301849)).
+The pagoda sequence (&#8203;[A301849](https://oeis.org/A301849)).
 In mod 2, its number wall is a self-similar fractal.
 In mod 3 and mod 7, all zeros in its number wall are isolated.
 -}
@@ -133,7 +143,7 @@ pagoda n = bit (n + 1) - bit (n - 1)
       | otherwise = one
 
 {-|
-The Fredholm-Rueppel sequence ([A036987](https://oeis.org/A036987)).
+The Fredholm-Rueppel sequence (&#8203;[A036987](https://oeis.org/A036987)).
 @rueppel n@ evaluates to 1 if n + 1 is a power of 2, and 0 otherwise.
 Its number wall contains zero-windows of exponentially increasing size, and
 an infinite diagonal line of ones.
@@ -148,7 +158,7 @@ rueppel n
 data Alpha = A | B | C | D | E | F
 
 {-|
-([A039974](https://oeis.org/A039974)). The mod-3 number wall of this sequence
+(&#8203;[A039974](https://oeis.org/A039974)). The mod-3 number wall of this sequence
 has an infinite central region with no zeros.
 -}
 ternary :: Ring a => Int -> a

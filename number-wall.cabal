@@ -13,8 +13,9 @@ description:
   Number walls can be defined in terms of determinants, but can also be calculated
   using a recursive algorithm.
   .
-  Formally, let \( R \) be an integral domain. The number wall of a sequence
-   \( S : \mathbb{Z} \to R \) is an infinite grid of numbers \( W \), defined as follows:
+  Formally, let \( R \) be an integral domain. The number wall of a
+  sequence \( S : \mathbb{Z} \to R \) is an infinite grid of
+  numbers \( W \), defined as follows:
   .
   \[
   W(x, y) = \begin{cases}
@@ -34,14 +35,14 @@ description:
   \end{vmatrix}
   \]
   .
-  The values in any number wall satisfy the relation
-   \( W(x, y - 1) W(x, y + 1) + W(x - 1, y) W(x + 1, y) = W(x, y)^2 \),
+  The values in any number wall satisfy the
+  relation \( W(x, y - 1) W(x, y + 1) + W(x - 1, y) W(x + 1, y) = W(x, y)^2 \),
   and some other more complicated relations. You can use these to define a
   recursive algorithm for generating number walls.
   .
   Here are some cool images created using the functions in this package:
   .
-  ![number wall image collage](collage.png)
+  ![number wall image collage](src/collage.png)
   .
   See [this video](https://www.youtube.com/watch?v=NO1_-qptr6c) for more
   information and fun facts.
