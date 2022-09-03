@@ -8,3 +8,9 @@
 
 * Added example usage to documentation.
 * Fixed image and math in description.
+
+## 0.1.0.2 -- 2022-9-3
+
+* Removed formal definition.
+* Added section headings in documentation.
+* Removed unnecessary `Show` constraint.

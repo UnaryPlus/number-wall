@@ -17,7 +17,13 @@ saveImage "pagoda.png" color (0, 256) (0, 128) wall
 {-# LANGUAGE BlockArguments #-}
 {-# LANGUAGE ConstraintKinds #-}
 module NumberWall
-  ( NumberWall, Col, Row, numberWall, pagoda, rueppel, ternary, saveImage, showSection, printSection
+  ( -- * Creating number walls
+    Col, Row, numberWall, NumberWall
+    -- * Special sequences
+  , pagoda, rueppel, ternary
+    -- * Displaying number walls
+  , saveImage, showSection, printSection
+    -- * Modular arithmetic
   , module Data.Mod.Word
   ) where
 
@@ -39,7 +45,6 @@ Although 'Int' and @Mod n@ for non-prime n also have 'Euclidean' instances, they
 are not actually Euclidean domains, and using 'numberWall' with them often causes
 divide-by-zero errors.
 -}
-
 type NumberWall a = (Eq a, Ring a, Euclidean a)
 
 type Col = Int
@@ -51,7 +56,7 @@ sign x = if even x then one else negate one
 {-|
 Generate the number wall for a sequence.
 -}
-numberWall :: (NumberWall a, Show a) => (Int -> a) -> Col -> Row -> a
+numberWall :: NumberWall a => (Int -> a) -> Col -> Row -> a
 numberWall s = memoFix2 \recurse col row ->
   let f a b = recurse (col + a) (row - b) in
   case row of
