@@ -14,3 +14,8 @@
 * Removed formal definition.
 * Added section headings in documentation.
 * Removed unnecessary `Show` constraint.
+
+## 0.1.0.3 -- 2022-9-3
+
+* Improved performance (thanks to Bodigrim).
+* Fixed source repository name.
