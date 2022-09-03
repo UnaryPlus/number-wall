@@ -55,7 +55,7 @@ extra-source-files: CHANGELOG.md, README.md, collage.png
 
 source-repository head
   type:     git
-  location: https://github.com/UnaryPlus/lambda.git
+  location: https://github.com/UnaryPlus/number-wall.git
 
 library
   hs-source-dirs:   src
