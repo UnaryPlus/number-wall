@@ -35,8 +35,8 @@ import Data.Chimera.ContinuousMapping (fromZCurve, toZCurve, wordToInt, intToWor
 import Data.Semiring (Semiring, Ring, zero, one, negate, (*), (+), (-), (^))
 import Data.Euclidean (Euclidean, quot)
 
-import Data.Mod.Word
 import Codec.Picture (PixelRGB8(..), generateImage, writePng)
+import Data.Mod.Word
 import Data.Word (Word8)
 
 {-|
@@ -56,7 +56,7 @@ sign :: Ring a => Int -> a
 sign x = if even x then one else negate one
 
 memoFix2 :: forall a. ((Int -> Int -> a) -> (Int -> Int -> a)) -> (Int -> Int -> a)
-memoFix2 f = uncast $ index $ (tabulateFix' (\g -> cast (f (uncast g))) :: VChimera a)
+memoFix2 f = uncast $ index (tabulateFix' (cast . f . uncast) :: VChimera a)
   where
     cast :: (Int -> Int -> a) -> (Word -> a)
     cast f = \n -> let (x, y) = fromZCurve n in
