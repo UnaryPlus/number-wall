@@ -1,3 +1,9 @@
+{-|
+Module:    NumberWall
+Copyright: (c) Owen Bechtel, 2022
+License:   MIT
+-}
+
 {-# LANGUAGE BlockArguments #-}
 {-# LANGUAGE ConstraintKinds #-}
 module NumberWall
@@ -15,6 +21,15 @@ import Data.Mod.Word
 import Codec.Picture (PixelRGB8(..), generateImage, writePng)
 import Data.Word (Word8)
 
+{-|
+The 'numberWall' function works for any Euclidean domain. (In other words,
+there must be some sort of @div@ function, along with addition and multiplication).
+Usually, this domain is either 'Integer' or @Mod p@ for some prime number p.
+Although 'Int' and @Mod n@ for non-prime n also have 'Euclidean' instances, they
+are not actually Euclidean domains, and using 'numberWall' with them often causes
+divide-by-zero errors.
+-}
+
 type NumberWall a = (Eq a, Ring a, Euclidean a)
 
 type Col = Int
@@ -23,6 +38,9 @@ type Row = Int
 sign :: Ring a => Int -> a
 sign x = if even x then one else negate one
 
+{-|
+Generate the number wall for a sequence.
+-}
 numberWall :: (NumberWall a, Show a) => (Int -> a) -> Col -> Row -> a
 numberWall s = memoFix2 \recurse col row ->
   let f a b = recurse (col + a) (row - b) in
@@ -100,6 +118,11 @@ searchRight f limit (col, row)
   | f col row == zero = searchRight f (limit - 1) (col + 1, row)
   | otherwise = Just col
 
+{-|
+The pagoda sequence ([A301849](https://oeis.org/A301849)).
+In mod 2, its number wall is a self-similar fractal.
+In mod 3 and mod 7, all zeros in its number wall are isolated.
+-}
 pagoda :: Ring a => Int -> a
 pagoda n = bit (n + 1) - bit (n - 1)
   where
@@ -109,6 +132,12 @@ pagoda n = bit (n + 1) - bit (n - 1)
       | k `mod` 4 == 1 = zero
       | otherwise = one
 
+{-|
+The Fredholm-Rueppel sequence ([A036987](https://oeis.org/A036987)).
+@rueppel n@ evaluates to 1 if n + 1 is a power of 2, and 0 otherwise.
+Its number wall contains zero-windows of exponentially increasing size, and
+an infinite diagonal line of ones.
+-}
 rueppel :: Semiring a => Int -> a
 rueppel n
   | n < 0 = zero
@@ -118,6 +147,10 @@ rueppel n
 
 data Alpha = A | B | C | D | E | F
 
+{-|
+([A039974](https://oeis.org/A039974)). The mod-3 number wall of this sequence
+has an infinite central region with no zeros.
+-}
 ternary :: Ring a => Int -> a
 ternary n
   | n < 0 = negate (ternary (-n - 1))
@@ -146,9 +179,21 @@ ternary n
           E -> match3 E D D
           F -> match3 D D F
 
+{-|
+RGB colors.
+-}
 type Color = (Word8, Word8, Word8)
 
-saveImage :: FilePath -> (a -> Color) -> (Col, Col) -> (Row, Row) -> (Col -> Row -> a) -> IO ()
+{-|
+Save a number wall as a PNG file.
+-}
+saveImage
+  :: FilePath          -- ^ File name
+  -> (a -> Color)      -- ^ Function assigning each number a color
+  -> (Col, Col)        -- ^ Column range
+  -> (Row, Row)        -- ^ Row range
+  -> (Col -> Row -> a) -- ^ Number wall
+  -> IO ()
 saveImage path toColor (minC, maxC) (minR, maxR) wall =
   let convert (r, g, b) = PixelRGB8 r g b
       image = generateImage
@@ -160,6 +205,9 @@ loop = flip map
 
 maxOf measure = foldr (max . measure) minBound
 
+{-|
+Convert a section of a number wall into a string.
+-}
 showSection :: (a -> String) -> (Col, Col) -> (Row, Row) -> (Col -> Row -> a) -> String
 showSection toString (minC, maxC) (minR, maxR) wall =
   let chunks = loop [minR..maxR-1] \r -> loop [minC..maxC-1] \c -> toString (wall c r)
@@ -167,5 +215,8 @@ showSection toString (minC, maxC) (minR, maxR) wall =
       pad s = replicate (len - length s) ' ' ++ s ++ " "
   in concatMap (\xs -> concatMap pad xs ++ "\n") chunks
 
+{-|
+Print a section of a number wall.
+-}
 printSection :: (a -> String) -> (Col, Col) -> (Row, Row) -> (Col -> Row -> a) -> IO ()
 printSection toString cols rows wall = putStr (showSection toString cols rows wall)
