@@ -57,19 +57,19 @@ main = do
 
   saveImage "test/pagoda.png"
     (match2 (181, 118, 46) (0, 0, 0))
-    (0, 224) (0, 124) pagoda2
+    (0, 200) (0, 100) pagoda2
 
   saveImage "test/rueppel.png"
     (match2 (255, 255, 255) (0, 0, 0))
-    (0, 128) (-1, 128) rueppel2
+    (14, 114) (14, 114) rueppel2
 
   saveImage "test/ternary.png"
     (match3 (0, 0, 0) (183, 24, 53) (207, 181, 84))
-    (-72, 72) (-1, 72) ternary3
+    (0, 100) (-1, 49) ternary3
 
   saveImage "test/pagoda-mod3.png"
     (match3 (255, 255, 255) (0, 0, 0) (53, 139, 142))
-    (-50, 50) (50, 150) pagoda3
+    (-12, 13) (30, 55) pagoda3
 
 testCases :: [Test]
 testCases =
